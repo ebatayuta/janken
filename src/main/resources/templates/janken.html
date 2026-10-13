@@ -9,8 +9,25 @@
 <body>
   <h1>じゃんけんページ</h1>
   <div th:if="${greeting}">
-    [[${greeting}]]
+    [[${greeting}]]<br>
+  </div>
+
+  <form action="/playJanken" method="post">
+    出す手を選択
+    <br>
+    <label><input type="radio" name="hand" value="グー">グー</label>
+    <label><input type="radio" name="hand" value="チョキ">チョキ</label>
+    <label><input type="radio" name="hand" value="パー">パー</label>
+    <br>
+    <input type="submit" value="じゃんけん!">
+  </form>
+
+  <div th:if="${result}">
+    <br>あなたの手：[[${pHand}]]
+    <br>相手の手：[[${cHand}]]
+    <br>結果：[[${result}]]
   </div>
 </body>
+
 
 </html>
