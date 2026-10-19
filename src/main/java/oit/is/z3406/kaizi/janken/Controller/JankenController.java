@@ -1,18 +1,28 @@
 package oit.is.z3406.kaizi.janken.controller;
 
-import org.apache.ibatis.annotations.Param;
+import java.security.Principal;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.service.annotation.PatchExchange;
+
+import oit.is.z3406.kaizi.janken.model.Entry;
 
 @Controller
 public class JankenController {
+
+  @Autowired
+  private Entry room;
+
   @GetMapping("/janken")
-  public String startJanken() {
+  public String startJanken(ModelMap model, Principal prin) {
+    String loginUser = prin.getName();
+    this.room.addUser(loginUser);
+    model.addAttribute("login_user", loginUser);
+    model.addAttribute("room", this.room);
     return "janken.html";
   }
 
