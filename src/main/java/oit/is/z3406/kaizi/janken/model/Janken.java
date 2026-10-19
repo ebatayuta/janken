@@ -12,7 +12,7 @@ import org.springframework.web.service.annotation.PatchExchange;
 @Controller
 public class Janken {
 
-  @PostMapping("/playJanken")
+  @PostMapping("/janken/playJanken")
   public String playJanken(@RequestParam String hand, ModelMap model) {
     String pHand = "";
     String cHand = "グー";

@@ -17,6 +17,9 @@ public class JankenAuthConfiguration {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.formLogin(login -> login
         .permitAll())
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/"))
         .authorizeHttpRequests(authz -> authz
             .requestMatchers("/janken/**").authenticated()
             .anyRequest().permitAll());

@@ -12,7 +12,15 @@
     [[${greeting}]]<br>
   </div>
 
-  <form action="/playJanken" method="post">
+  <h1>エントリー [[${login_user}]]</h1>
+
+  <div th:if="${room}">
+    <ul>
+      <li th:each="user : ${room.users}">[[${user}]]</li>
+    </ul>
+  </div>
+
+  <form th:action="@{/janken/playJanken}" method="post">
     出す手を選択
     <br>
     <label><input type="radio" name="hand" value="グー">グー</label>
@@ -27,6 +35,9 @@
     <br>相手の手：[[${cHand}]]
     <br>結果：[[${result}]]
   </div>
+
+  <br>
+  <div><a href="/logout">ログアウト</a></div>
 </body>
 
 
