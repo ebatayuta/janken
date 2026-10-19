@@ -1,4 +1,4 @@
-package oit.is.z3406.kaizi.janken.Controller;
+package oit.is.z3406.kaizi.janken.controller;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
