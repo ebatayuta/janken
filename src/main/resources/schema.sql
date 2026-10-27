@@ -1,6 +1,6 @@
 CREATE TABLE users (
     id IDENTITY,
-    userName VARCHAR NOT NULL /*nameは使えない*/
+    userName VARCHAR NOT NULL /*userは使えない*/
 );
 CREATE TABLE matches (
     id IDENTITY,

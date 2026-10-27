@@ -14,6 +14,13 @@
 
   <h1>エントリー [[${login_user}]]</h1>
 
+  <div th:each="user:${users}">
+    <tr>
+      <td>Id:[[${user.id}]]</td>
+      <td>ユーザ名:[[${user.userName}]]</td>
+    </tr>
+  </div>
+
   <div th:if="${room}">
     <ul>
       <li th:each="user : ${room.users}">[[${user}]]</li>
