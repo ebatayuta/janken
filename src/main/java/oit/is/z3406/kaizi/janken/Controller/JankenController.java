@@ -14,6 +14,8 @@ import oit.is.z3406.kaizi.janken.model.Entry;
 
 import oit.is.z3406.kaizi.janken.model.User;
 import oit.is.z3406.kaizi.janken.model.UserMapper;
+import oit.is.z3406.kaizi.janken.model.Match;
+import oit.is.z3406.kaizi.janken.model.MatchMapper;
 
 @Controller
 public class JankenController {
@@ -23,6 +25,8 @@ public class JankenController {
 
   @Autowired
   private UserMapper userMapper;
+  @Autowired
+  private MatchMapper matchMapper;
 
   @GetMapping("/janken")
   public String startJanken(ModelMap model, Principal prin) {
@@ -34,6 +38,8 @@ public class JankenController {
     // lec04
     ArrayList<User> Users = userMapper.selectAllUser();
     model.addAttribute("users", Users);
+    ArrayList<Match> Matches = matchMapper.selectAllMatch();
+    model.addAttribute("matches", Matches);
     return "janken.html";
   }
 

@@ -12,13 +12,17 @@
     [[${greeting}]]<br>
   </div>
 
-  <h1>エントリー [[${login_user}]]</h1>
+  <h3>エントリー [[${login_user}]]</h3>
 
   <div th:each="user:${users}">
-    <tr>
-      <td>Id:[[${user.id}]]</td>
-      <td>ユーザ名:[[${user.userName}]]</td>
-    </tr>
+    ・[[${user.userName}]]
+  </div>
+
+  <h3>試合結果</h3>
+
+  <div th:each="match:${matches}">
+    id:[[${match.id}]] user1:[[${match.user1}]] user2:[[${match.user2}]] user1の手:[[${match.user1Hand}]]
+    user2の手:[[${match.user2Hand}]]
   </div>
 
   <div th:if="${room}">
