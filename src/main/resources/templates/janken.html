@@ -14,9 +14,9 @@
 
   <h3>エントリー [[${login_user}]]</h3>
 
-  <div th:each="user:${users}">
-    ・[[${user.userName}]]
-  </div>
+  <ul>
+    <li th:each="user : ${users}"><a th:href="@{/match(id=${user.id})}"> [[${user.userName}]]</a></li>
+  </ul>
 
   <h3>試合結果</h3>
 
@@ -24,13 +24,13 @@
     id:[[${match.id}]] user1:[[${match.user1}]] user2:[[${match.user2}]] user1の手:[[${match.user1Hand}]]
     user2の手:[[${match.user2Hand}]]
   </div>
-
+  <!--
   <div th:if="${room}">
     <ul>
       <li th:each="user : ${room.users}">[[${user}]]</li>
     </ul>
   </div>
-
+-->
   <form th:action="@{/janken/playJanken}" method="post">
     出す手を選択
     <br>
