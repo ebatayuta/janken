@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,5 +49,15 @@ public class JankenController {
     String greeting = "Hi " + name;
     model.addAttribute("greeting", greeting);
     return "janken.html";
+  }
+
+  @GetMapping("/match")
+  public String matching(@RequestParam Integer id, ModelMap model, Principal prin) {
+    String loginUser = prin.getName();
+    this.room.addUser(loginUser);
+    User user = userMapper.selectById(id);
+    model.addAttribute("login_user", loginUser);
+    model.addAttribute("opponent", user.getUserName());
+    return "match.html";
   }
 }
