@@ -11,6 +11,24 @@
   <br>
   <h3>[[${login_user}]] vs [[${opponent}]]</h3>
   <br>
+  <form th:action="@{/fight}" method="get">
+    出す手を選択
+    <br>
+    <label><input type="radio" name="hand" value="Gu">グー</label>
+    <label><input type="radio" name="hand" value="Choki">チョキ</label>
+    <label><input type="radio" name="hand" value="Pa">パー</label>
+    <br>
+    <input type="submit" value="じゃんけん!">
+  </form>
+
+  <div th:if="${result}">
+    <br>あなたの手：[[${u1Hand}]]
+    <br>相手の手：[[${u2Hand}]]
+    <br>結果：[[${result}]]
+  </div>
+  <br>
+  <div><a href="/janken">もどる</a></div>
+  <br>
   <div><a href="/logout">ログアウト</a></div>
 </body>
 
