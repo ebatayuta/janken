@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +17,8 @@ import oit.is.z3406.kaizi.janken.model.User;
 import oit.is.z3406.kaizi.janken.model.UserMapper;
 import oit.is.z3406.kaizi.janken.model.Match;
 import oit.is.z3406.kaizi.janken.model.MatchMapper;
+import oit.is.z3406.kaizi.janken.model.MatchInfo;
+import oit.is.z3406.kaizi.janken.model.MatchInfoMapper;
 
 @Controller
 public class JankenController {
@@ -29,6 +30,8 @@ public class JankenController {
   private UserMapper userMapper;
   @Autowired
   private MatchMapper matchMapper;
+  @Autowired
+  private MatchInfoMapper matchInfoMapper;
 
   @GetMapping("/janken")
   public String startJanken(ModelMap model, Principal prin) {
@@ -42,15 +45,23 @@ public class JankenController {
     model.addAttribute("users", Users);
     ArrayList<Match> Matches = matchMapper.selectAllMatch();
     model.addAttribute("matches", Matches);
+
+    // lec05
+    ArrayList<MatchInfo> activeMatchInfoes = matchInfoMapper.selectActiveMatchInfo();
+    model.addAttribute("aMInfoes", activeMatchInfoes);
+
     return "janken.html";
   }
 
-  @PostMapping("/janken")
-  public String startJankenWithGreeting(@RequestParam String name, ModelMap model) {
-    String greeting = "Hi " + name;
-    model.addAttribute("greeting", greeting);
-    return "janken.html";
-  }
+  /*
+   * @PostMapping("/janken")
+   * public String startJankenWithGreeting(@RequestParam String name, ModelMap
+   * model) {
+   * String greeting = "Hi " + name;
+   * model.addAttribute("greeting", greeting);
+   * return "janken.html";
+   * }
+   */
 
   @GetMapping("/match")
   public String matching(@RequestParam Integer id, ModelMap model, Principal prin) {
@@ -59,41 +70,26 @@ public class JankenController {
     User user = userMapper.selectById(id);
     model.addAttribute("login_user", loginUser);
     model.addAttribute("opponent", user.getUserName());
+    model.addAttribute("opponentId", id);
     return "match.html";
   }
 
-  @GetMapping("/fight")
-  public String jankenMatch(@RequestParam String hand, ModelMap model, Principal prin) {
+  @GetMapping("/fight/{id}")
+  public String jankenMatch(@PathVariable Integer id, @RequestParam String hand, ModelMap model, Principal prin) {
     String u1Name = prin.getName();
-    String u2Name = "CPU";
+    User u2 = userMapper.selectById(id);
     int u1Id = userMapper.selectByUserName(u1Name).getId();
-    int u2Id = userMapper.selectByUserName(u2Name).getId();
+    int u2Id = u2.getId();
     String u1Hand = hand;
-    String u2Hand = "Gu";
-    String result;
 
-    Match match = new Match();
-    match.setUser1(u1Id);
-    match.setUser2(u2Id);
-    match.setUser1Hand(u1Hand);
-    match.setUser2Hand(u2Hand);
-    matchMapper.insertMatches(match);
+    MatchInfo matchInfo = new MatchInfo();
+    matchInfo.setUser1(u1Id);
+    matchInfo.setUser2(u2Id);
+    matchInfo.setUser1Hand(u1Hand);
+    matchInfoMapper.insertMatchInfo(matchInfo);
 
-    if (u1Hand.equals("Gu")) {
-      result = "Draw";
-    } else if (u1Hand.equals("Choki")) {
-      result = "You lose...";
-    } else if (u1Hand.equals("Pa")) {
-      result = "You win!";
-    } else {
-      result = "エラー";
-    }
     model.addAttribute("login_user", u1Name);
-    model.addAttribute("opponent", u2Name);
-    model.addAttribute("u1Hand", u1Hand);
-    model.addAttribute("u2Hand", u2Hand);
-    model.addAttribute("result", result);
 
-    return "match.html";
+    return "wait.html";
   }
 }

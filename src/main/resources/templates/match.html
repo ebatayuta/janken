@@ -11,7 +11,7 @@
   <br>
   <h3>[[${login_user}]] vs [[${opponent}]]</h3>
   <br>
-  <form th:action="@{/fight}" method="get">
+  <form th:action="@{/fight/{id}(id=${opponentId})}" method="get">
     出す手を選択
     <br>
     <label><input type="radio" name="hand" value="Gu">グー</label>

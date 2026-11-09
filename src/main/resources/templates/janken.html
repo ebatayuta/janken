@@ -18,6 +18,13 @@
     <li th:each="user : ${users}"><a th:href="@{/match(id=${user.id})}"> [[${user.userName}]]</a></li>
   </ul>
 
+  <div>
+    <h3>アクティブな試合</h3>
+    <div th:each="aMInfo:${aMInfoes}">
+      id:[[${aMInfo.id}]] user1:[[${aMInfo.user1}]] user2:[[${aMInfo.user2}]] IsActive:[[${aMInfo.isActive}]]
+    </div>
+  </div>
+
   <h3>試合結果</h3>
 
   <div th:each="match:${matches}">
