@@ -10,6 +10,14 @@
   <h1>相手の手を待ってます</h1>
 
   Hi [[${login_user}]]
+
+  <div th:if="${matchResult}">
+    <br>Match: id [[${matchResult.id}]] user1:[[${matchResult.user1}]] user2:[[${matchResult.user2}]]
+    user1の手:[[${matchResult.user1Hand}]]
+    user2の手:[[${matchResult.user2Hand}]]
+
+    <div><a href="/janken">もどる</a></div>
+  </div>
 </body>
 
 

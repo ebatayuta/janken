@@ -22,10 +22,10 @@ import oit.is.z3406.kaizi.janken.model.MatchInfoMapper;
 
 @Controller
 public class JankenController {
-
-  @Autowired
-  private Entry room;
-
+  /*
+   * @Autowired
+   * private Entry room;
+   */
   @Autowired
   private UserMapper userMapper;
   @Autowired
@@ -36,9 +36,9 @@ public class JankenController {
   @GetMapping("/janken")
   public String startJanken(ModelMap model, Principal prin) {
     String loginUser = prin.getName();
-    this.room.addUser(loginUser);
+    // this.room.addUser(loginUser);
     model.addAttribute("login_user", loginUser);
-    model.addAttribute("room", this.room);
+    // model.addAttribute("room", this.room);
 
     // lec04
     ArrayList<User> Users = userMapper.selectAllUser();
@@ -66,7 +66,6 @@ public class JankenController {
   @GetMapping("/match")
   public String matching(@RequestParam Integer id, ModelMap model, Principal prin) {
     String loginUser = prin.getName();
-    this.room.addUser(loginUser);
     User user = userMapper.selectById(id);
     model.addAttribute("login_user", loginUser);
     model.addAttribute("opponent", user.getUserName());
@@ -77,18 +76,37 @@ public class JankenController {
   @GetMapping("/fight/{id}")
   public String jankenMatch(@PathVariable Integer id, @RequestParam String hand, ModelMap model, Principal prin) {
     String u1Name = prin.getName();
-    User u2 = userMapper.selectById(id);
     int u1Id = userMapper.selectByUserName(u1Name).getId();
-    int u2Id = u2.getId();
     String u1Hand = hand;
 
-    MatchInfo matchInfo = new MatchInfo();
-    matchInfo.setUser1(u1Id);
-    matchInfo.setUser2(u2Id);
-    matchInfo.setUser1Hand(u1Hand);
-    matchInfoMapper.insertMatchInfo(matchInfo);
-
     model.addAttribute("login_user", u1Name);
+
+    ArrayList<MatchInfo> mI = matchInfoMapper.selectMatchingMatchInfo(u1Id);
+    if (!mI.isEmpty()) {
+      MatchInfo matchingMI = mI.get(0);
+      matchingMI.setIsActive(false);
+
+      Match matchingMatch = new Match();
+      matchingMatch.setUser1(matchingMI.getUser1());
+      matchingMatch.setUser2(u1Id);
+      matchingMatch.setUser1Hand(matchingMI.getUser1Hand());
+      matchingMatch.setUser2Hand(u1Hand);
+      matchingMatch.setIsActive(true);
+
+      matchMapper.insertMatches(matchingMatch);
+      matchInfoMapper.updateById(matchingMI);
+
+      model.addAttribute("matchResult", matchingMatch);
+    } else {
+      User u2 = userMapper.selectById(id);
+      int u2Id = u2.getId();
+
+      MatchInfo matchInfo = new MatchInfo();
+      matchInfo.setUser1(u1Id);
+      matchInfo.setUser2(u2Id);
+      matchInfo.setUser1Hand(u1Hand);
+      matchInfoMapper.insertMatchInfo(matchInfo);
+    }
 
     return "wait.html";
   }
